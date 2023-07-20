@@ -1,5 +1,6 @@
 import { Navbar, Nav, Container, NavbarBrand } from 'react-bootstrap';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import logo from '../assets/logo.png';
 
 const Header = () => {
   return (
@@ -14,7 +15,10 @@ const Header = () => {
             {/* container so inner elements don't stretch to the edge of the browser */}
             <Container>
                 {/* brand name */}
-                <NavbarBrand href="/">ProShop</NavbarBrand>
+                <NavbarBrand href="/">
+                    <img src={logo} alt="ProShop"/>
+                    ProShop
+                </NavbarBrand>
                 {/*  */}
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 {/* components that will be hidden in the hamburger menu */}
