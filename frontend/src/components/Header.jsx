@@ -5,7 +5,8 @@ import logo from '../assets/logo.png';
 const Header = () => {
   return (
     <header>
-        {/* navbar settings 
+        {/* 
+            navbar settings 
             bg - background color
             variant - 
             expand - when should the menu turn into a hamburger? lg makes it turn fairly quickly so we can use md
