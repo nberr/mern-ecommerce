@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "./asyncHandler.js";
 import User from "../models/userModel.js";
+import bcrypt from "bcryptjs";
 
 // Protect routes
 const protect = asyncHandler(async (req, res, next) => {
@@ -8,6 +9,9 @@ const protect = asyncHandler(async (req, res, next) => {
 
     // read the JWT from the cookie
     token = req.cookies.jwt;
+
+    /* try authorizing without token */
+    const authHeader = req.headers.authorization;
 
     if (token) {
         try {
@@ -21,9 +25,34 @@ const protect = asyncHandler(async (req, res, next) => {
             throw new Error('Not authorized, token failed');
         }
     }
+    else if (authHeader && authHeader.startsWith('Basic')){
+        const credentials = authHeader.split(' ')[1];
+        const decodedCredentials = Buffer.from(credentials, 'base64').toString('utf-8');
+        const [username, password] = decodedCredentials.split(':');
+
+        try {
+            // Validate username and password here (e.g., using your User model)
+            const user = await User.findOne({ email: username });
+            
+            if (user && await user.matchPassword(password)) {
+                req.user = user;
+                next();
+            }
+            else {
+                console.log(error);
+                res.status(401);
+                throw new Error('Not authorized, credential error');
+            }
+        }
+        catch(error) {
+            console.log(error);
+            res.status(401);
+            throw new Error('Not authorized, credential error');
+        }
+    }
     else {
         res.status(401);
-        throw new Error('Not authorized, no token');
+        throw new Error('Not authorized, no token or credentials provided');
     }
 });
 
