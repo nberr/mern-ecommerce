@@ -1,5 +1,5 @@
 # mern-ecommerce
-MERN Ecommerce website
+MERN Ecommerce website built by following [Traversy Media](https://www.traversymedia.com/)
 
 ## Front End
 The front end all starts in index.js which contains the App and sets up routes
